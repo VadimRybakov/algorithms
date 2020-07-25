@@ -6,27 +6,34 @@ public class MyArrayList<T extends Comparable<T>> {
     private T[] list;
     private int size = 0;
     private final int DEFAULT_CAPACITY = 10;
+    private int capacity;
 
+    public int getCapacity() {
+        return capacity;
+    }
 
     public MyArrayList(int capacity) {
         if (capacity < 0) {
             throw new IllegalArgumentException("capacity : " + capacity);
         }
+        this.capacity = capacity;
         list = (T[]) new Comparable[capacity];
     }
 
     public MyArrayList() {
-        list = (T[]) new Comparable[DEFAULT_CAPACITY];
+        capacity = DEFAULT_CAPACITY;
+        list = (T[]) new Comparable[capacity];
     }
 
     public void add(T item) {
+        if(size == capacity - 1) increaseCapacity();
         list[size] = item;
         size++;
     }
 
     public void add(int index, T item) {
         checkCorrectIndex(index);
-
+        if(size == capacity - 1) increaseCapacity();
         for (int i = size; i > index; i--) {
             list[i] = list[i - 1];
         }
@@ -79,6 +86,16 @@ public class MyArrayList<T extends Comparable<T>> {
         return -1;
     }
 
+    public final void increaseCapacity() {
+        T[] temp = list;
+        capacity *= 1.5;
+        list = (T[]) new Comparable[capacity];
+        for (int i = 0; i < temp.length; i++) {
+            list[i] = temp[i];
+            temp[i] = null;
+        }
+    }
+
     public boolean contains(T item) {
         return indexOf(item) > -1;
     }
@@ -104,6 +121,18 @@ public class MyArrayList<T extends Comparable<T>> {
         list[index2] = temp;
     }
 
+    public void selectionSort(Comparator<T> comparator) {
+        for (int i = 0; i < size - 1; i++) {
+            int iMin = i;
+            for (int j = i + 1; j < size; j++) {
+                if (comparator.compare(list[j], list[iMin]) < 0) {
+                    iMin = j;
+                }
+            }
+            swap(i, iMin);
+        }
+    }
+
     public void selectionSort() {
         for (int i = 0; i < size - 1; i++) {
             int iMin = i;
@@ -122,6 +151,19 @@ public class MyArrayList<T extends Comparable<T>> {
             int j = i;
             key = list[i];
             while (j > 0 && less(key, list[j - 1])) {
+                list[j] = list[j - 1];
+                j--;
+            }
+            list[j] = key;
+        }
+    }
+
+    public void insertionSort(Comparator<T> comparator) {
+        T key;
+        for (int i = 1; i < size; i++) {
+            int j = i;
+            key = list[i];
+            while (j > 0 && comparator.compare(key, list[j - 1]) < 0) {
                 list[j] = list[j - 1];
                 j--;
             }
