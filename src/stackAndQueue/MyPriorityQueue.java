@@ -1,12 +1,14 @@
 package stackAndQueue;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EmptyStackException;
 
 public class MyPriorityQueue<T extends Comparable<T>> {
     private T[] list;
     private int size = 0;
     private final int DEFAULT_CAPACITY = 10;
+    private Comparator<T> comparator;
 
 
     public MyPriorityQueue(int capacity) {
@@ -20,6 +22,11 @@ public class MyPriorityQueue<T extends Comparable<T>> {
         list = (T[]) new Comparable[DEFAULT_CAPACITY];
     }
 
+    public MyPriorityQueue(Comparator<T> comparator){
+        this.comparator = comparator;
+        list = (T[]) new Comparable[DEFAULT_CAPACITY];
+    }
+
     public void insert(T item) {
         if (isFull()) {
             throw new StackOverflowError();
@@ -27,9 +34,16 @@ public class MyPriorityQueue<T extends Comparable<T>> {
         list[size] = item;
         size++;
         int i = size - 1;
-        while (i > 0 && list[i].compareTo(list[i - 1]) > 0) {
-            swap(i, i - 1);
-            i--;
+        if(comparator != null) {
+            while (i > 0 && comparator.compare(list[i], list[i - 1]) > 0) {
+                swap(i, i - 1);
+                i--;
+            }
+        } else {
+            while (i > 0 && list[i].compareTo(list[i - 1]) > 0) {
+                swap(i, i - 1);
+                i--;
+            }
         }
     }
 
