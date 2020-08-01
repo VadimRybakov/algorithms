@@ -4,8 +4,9 @@ public class MyLinkedStack<T> {
     private MyLinkedList<T> stack = new MyLinkedList<>();
 
     public void push(T item){
-        stack.insertFirst(item);
+        stack.insertLast(item);
     }
+
     public T pop(){
         return stack.deleteFirst();
     }
