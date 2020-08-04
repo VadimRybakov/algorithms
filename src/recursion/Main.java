@@ -11,9 +11,17 @@ public class Main {
 //        System.out.println(triangleNum(5));
 //        System.out.println(recTriangleNum(5));
 
-        System.out.println(multiply(3, 8));
-        System.out.println(recMultiply(3,8));
+//        System.out.println(multiply(3, 8));
+//        System.out.println(recMultiply(3,8));
 
+//        System.out.println(recursivePow(2, 8));
+//        System.out.println(recursivePow(3, 21));
+
+        int[] w = {3, 2, 12, 5, 1};
+        int[] v = {2100, 4200, 10010, 150, 10};
+        int N = 5;
+        int W = 10;
+        System.out.println(backpack(v, w, N, W));
     }
 
     public static int fact(int n) {
@@ -81,5 +89,19 @@ public class Main {
         return recMultiply(a, b - 1) + a;
     }
 
+    public static int recursivePow(int base, int pow){
+        if(pow == 0) return 1;
+        else if (pow % 2 == 0) return recursivePow(base, pow/2) * recursivePow(base, pow/2);
+        else  return base * recursivePow(base, pow - 1);
+    }
+
+    public static int backpack(int[] v, int[] w, int n, int W) {
+        if (n == 0) return 0;
+        if (w[n - 1] > W)
+            return backpack(v, w, n - 1, W);
+        else {
+            return Math.max(backpack(v, w, n - 1, W), backpack(v, w, n - 1, W - w[n - 1]) + v[n - 1]);
+        }
+    }
 
 }
