@@ -1,21 +1,27 @@
 package tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        MyTreeMap<Integer, String> map = new MyTreeMap<>();
-
-        map.put(5,"five");
-        map.put(1,"one");
-        map.put(3,"three");
-        map.put(2,"two");
-
-        System.out.println(map);
-        System.out.println(map.get(2));
-        map.put(2,"ttt");
-        System.out.println(map);
-
-        map.deleteMin();
-        System.out.println(map);
-
+        List<MyTreeMap<Integer, Integer>> list = new ArrayList<>();
+        int unBalanced = 0;
+        for (int i = 0; i < 2000000; i++) {
+            list.add(new MyTreeMap<>());
+            while (list.get(i).height() < 6) {
+                list.get(i).put(
+                        (int)(-100 + Math.random() * 200),
+                        (int)(-100 + Math.random() * 200)
+                );
+            }
+            if(!list.get(i).isBalanced())
+                unBalanced++;
+        }
+//        System.out.println(list.get(1).height());
+//        System.out.println(list.get(7).toString());
+        System.out.println(unBalanced);
+        double percentBalanced = 100 * (double)unBalanced / list.size();
+        System.out.println(percentBalanced);
     }
 }
