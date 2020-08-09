@@ -1,21 +1,14 @@
 package graphs;
 
-import java.util.LinkedList;
-
-public class DepthFirstPaths {
-    private boolean[] marked;
-    private int[] edgeTo;
-    private int source;
+public class DepthFirstPaths extends FirstPath{
 
     public DepthFirstPaths(Graph g, int source) {
-        this.source = source;
-        marked = new boolean[g.getVertexCount()];
-        edgeTo = new int[g.getVertexCount()];
-
+        super(g, source);
         dfs(g, source);
     }
 
-    private void dfs(Graph g, int v) {
+    @Override
+    protected void dfs(Graph g, int v) {
         marked[v] = true;
         for (int w : g.getAdjList(v)) {
             if (!marked[w]) {
@@ -24,22 +17,4 @@ public class DepthFirstPaths {
             }
         }
     }
-
-    public boolean hasPathTo(int v) {
-        return marked[v];
-    }
-
-    public LinkedList<Integer> pathTo(int v) {
-        if (!hasPathTo(v)) {
-            return null;
-        }
-        LinkedList<Integer> stack = new LinkedList<>();
-        int vertex = v;
-        while(vertex != source){
-            stack.push(vertex);
-            vertex = edgeTo[vertex];
-        }
-        return stack;
-    }
-
 }
